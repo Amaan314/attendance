@@ -1,26 +1,3 @@
-# import asyncio
-# import websockets
-# import sys
-
-# async def listen_to_attendance():
-#     if len(sys.argv) < 2:
-#         print("Usage: python test_websocket.py <session_id>")
-#         return
-#     session_id = sys.argv[1]
-#     uri = f"ws://127.0.0.1:8000/teacher/ws/attendance/{session_id}"
-#     print(f"Connecting to {uri}...")
-#     async with websockets.connect(uri) as websocket:
-#         print("Connection established. Waiting for attendance updates...")
-#         try:
-#             while True:
-#                 message = await websocket.recv()
-#                 print(f"\n<<< RECEIVED UPDATE: {message}\n")
-#         except websockets.ConnectionClosed:
-#             print("Connection closed.")
-
-# if __name__ == "__main__":
-#     asyncio.run(listen_to_attendance())
-
 import asyncio
 import websockets
 import sys
