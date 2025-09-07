@@ -2,15 +2,14 @@
 'use client';
 
 import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import '../app/calendar.css'; // Import custom calendar styles
 
 const CalendarComponent = ({ selectedDate, setSelectedDate }) => {
   return (
-    <div className="p-4">
+    <div>
       <Calendar
         onChange={setSelectedDate}
         value={selectedDate}
-        className="rounded-lg border-none shadow-lg"
       />
     </div>
   );

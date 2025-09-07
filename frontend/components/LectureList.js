@@ -20,31 +20,28 @@ const LectureList = ({ lectures }) => {
   };
 
   if (!lectures || lectures.length === 0) {
-    return <p className="p-4">No lectures for the selected date.</p>;
+    return <p className="text-gray-400">No lectures for the selected date.</p>;
   }
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Lectures</h2>
-      <ul className="space-y-4">
-        {lectures.map((lecture) => (
-          <li key={lecture.id} className="p-4 bg-white rounded-lg shadow flex justify-between items-center">
-            <div>
-              <p className="font-bold">{lecture.subject.name}</p>
-              <p className="text-gray-600">{lecture.subject.code}</p>
-              <p className="text-gray-600">
-                {lecture.start_time} - {lecture.end_time}
-              </p>
-            </div>
-            <button
-              onClick={() => handleStartAttendance(lecture.id)}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Start Attendance
-            </button>
-          </li>
-        ))}
-      </ul>
+    <div className="space-y-4">
+      {lectures.map((lecture) => (
+        <div key={lecture.id} className="bg-gray-700 p-4 rounded-lg shadow-md flex justify-between items-center">
+          <div>
+            <p className="font-bold text-lg text-gray-100">{lecture.subject.name}</p>
+            <p className="text-gray-300">{lecture.subject.code}</p>
+            <p className="text-gray-400">
+              {lecture.start_time} - {lecture.end_time}
+            </p>
+          </div>
+          <button
+            onClick={() => handleStartAttendance(lecture.id)}
+            className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200"
+          >
+            Start Attendance
+          </button>
+        </div>
+      ))}
     </div>
   );
 };

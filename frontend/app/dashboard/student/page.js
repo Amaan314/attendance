@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Html5QrcodeScanner } from 'html5-qrcode';
-import { getMe, scanAttendance } from '../../../lib/api';
-import Header from '../../../components/Header';
+import { getMe, scanAttendance } from '@/lib/api';
+import Header from '@/components/Header';
 
 export default function StudentDashboard() {
   const [user, setUser] = useState(null);
@@ -12,7 +12,6 @@ export default function StudentDashboard() {
   const [scanResult, setScanResult] = useState(null);
   const [error, setError] = useState(null);
   const router = useRouter();
-  const scannerRef = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -29,8 +28,9 @@ export default function StudentDashboard() {
   }, [router]);
 
   useEffect(() => {
+    let scanner;
     if (showScanner) {
-      const scanner = new Html5QrcodeScanner(
+      scanner = new Html5QrcodeScanner(
         'reader',
         {
           qrbox: {
@@ -42,13 +42,11 @@ export default function StudentDashboard() {
         false
       );
 
-      scannerRef.current = scanner;
-
       const onScanSuccess = (decodedText, decodedResult) => {
         setScanResult(decodedText);
         setShowScanner(false);
-        scanner.clear();
         handleScan(decodedText);
+        scanner.clear();
       };
 
       const onScanFailure = (error) => {
@@ -56,45 +54,51 @@ export default function StudentDashboard() {
       };
 
       scanner.render(onScanSuccess, onScanFailure);
-
-      return () => {
-        if (scannerRef.current) {
-          scannerRef.current.clear();
-        }
-      };
     }
+
+    return () => {
+      if (scanner) {
+        scanner.clear().catch(error => console.error("Failed to clear scanner", error));
+      }
+    };
   }, [showScanner]);
 
-  const handleScan = async (sessionId) => {
+  const handleScan = async (qrData) => {
     const token = localStorage.getItem('token');
     try {
-      await scanAttendance(token, sessionId);
-      router.push('/dashboard/student');
+        // Assuming qrData is a JSON string with session_id and token
+        const { session_id, token: qrToken } = JSON.parse(qrData);
+        await scanAttendance(token, session_id, qrToken);
+        setScanResult('Attendance marked successfully!');
+        setError(null);
     } catch (error) { 
-      setError(error.message);
+        setError(error.message || "Invalid QR Code");
+        setScanResult(null);
     }
   };
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center bg-gray-900">Loading...</div>;
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-900 text-gray-100">
       <Header user={user} />
-      <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">Student Dashboard</h1>
-        <button
-          onClick={() => setShowScanner(!showScanner)}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          {showScanner ? 'Close Scanner' : 'Scan Attendance'}
-        </button>
+      <main className="container mx-auto p-4 md:p-6 flex flex-col items-center">
+        <h1 className="text-3xl font-bold mb-6">Student Dashboard</h1>
+        <div className="w-full max-w-md bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center">
+            <button
+              onClick={() => setShowScanner(!showScanner)}
+              className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 text-lg"
+            >
+              {showScanner ? 'Close Scanner' : 'Scan Attendance QR'}
+            </button>
 
-        {showScanner && <div id="reader" className="mt-4"></div>}
-        {error && <p className="text-red-500 mt-4">{error}</p>}
-        {scanResult && <p className="text-green-500 mt-4">Scan successful!</p>}
-      </div>
+            {showScanner && <div id="reader" className="mt-6 w-full"></div>}
+            {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
+            {scanResult && <p className="text-green-500 mt-4 text-center">{scanResult}</p>}
+        </div>
+      </main>
     </div>
   );
 }
