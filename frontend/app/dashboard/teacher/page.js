@@ -33,14 +33,14 @@ export default function TeacherDashboard() {
       <main className="container mx-auto p-4 md:p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-1 bg-gray-800 p-4 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Calendar</h2>
+            <h2 className="text-xl font-bold mb-4">🗓️ Calendar</h2>
             <CalendarComponent
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
             />
           </div>
           <div className="md:col-span-2 bg-gray-800 p-4 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Upcoming Lectures</h2>
+            <h2 className="text-xl font-bold mb-4">🗓️ Today's Lectures</h2>
             <LectureList lectures={lectures} />
           </div>
         </div>

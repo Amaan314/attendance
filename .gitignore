@@ -28,7 +28,7 @@ venv/
 *.env
 .gemini
 -p
-
+.env.local
 # VSCode settings
 .vscode/
 

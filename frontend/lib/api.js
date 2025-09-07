@@ -1,6 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 
-const BASE_URL = "http://localhost:8000";
+// const BASE_URL = "http://localhost:8000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const login = async (username, password) => {
   const response = await fetch(`${BASE_URL}/auth/token`, {
