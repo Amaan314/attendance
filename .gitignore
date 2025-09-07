@@ -1,0 +1,40 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+.next/
+out/
+.vscode/
+*.log
+
+# Next.js build and static files
+.next/
+out/
+
+# FastAPI
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+
+# Python environment files
+venv/
+.env
+*.env
+.gemini
+-p
+
+# VSCode settings
+.vscode/
+
+# macOS Finder
+.DS_Store
+
+# Editor directories and files
+.idea/
+*.swp
