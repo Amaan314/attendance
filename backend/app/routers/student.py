@@ -46,11 +46,11 @@ async def scan_attendance(
     )
 
     # 5. Notify teacher via WebSocket
-    update_message = schemas.LiveAttendanceUpdate(
-        student_name=current_user.full_name,
-        timestamp=record.timestamp
-    ).model_dump_json()
-
-    await manager.broadcast_to_session(update_message, payload.session_id)
+    student_data = {
+        "id": current_user.id,
+        "name": current_user.full_name,
+        "email": current_user.username
+    }
+    await manager.broadcast_to_session(json.dumps(student_data), payload.session_id)
 
     return {"status": "success", "message": "Attendance marked successfully"}

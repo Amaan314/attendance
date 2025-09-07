@@ -159,6 +159,7 @@ def refresh_qr_token(session_id: str, redis_client: Redis = Depends(get_redis)):
 
     new_token = str(uuid.uuid4())
     redis_client.set(f"qr_token:{session_id}", new_token, ex=20)
+    print( f"Refreshed token for session {session_id}: {new_token}" )
     return {"token": new_token}
 
 # --- MODIFIED: WebSocket endpoint now uses its own authenticator ---
