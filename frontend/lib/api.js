@@ -93,14 +93,14 @@ export const startAttendanceSession = async (token, slotId) => {
   return data;
 };
 
-export const scanAttendance = async (token, sessionId) => {
+export const scanAttendance = async (token, sessionId, qrToken) => {
   const response = await fetch(`${BASE_URL}/student/attendance/scan`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ session_id: sessionId }),
+    body: JSON.stringify({ session_id: sessionId, token: qrToken }),
   });
 
   if (!response.ok) {

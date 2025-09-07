@@ -25,7 +25,7 @@ async def scan_attendance(
     
     # 1. Verify Token
     valid_token = redis_client.get(f"qr_token:{payload.session_id}")
-    if not valid_token or valid_token != payload.token:
+    if not valid_token or valid_token.decode() != payload.token:
         raise HTTPException(status_code=400, detail="Invalid or expired QR code")
     
     # 2. Get lecture ID for this session
