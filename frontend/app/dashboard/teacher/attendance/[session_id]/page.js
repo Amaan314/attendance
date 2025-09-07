@@ -31,7 +31,7 @@ const AttendancePage = () => {
   useEffect(() => {
     const qrInterval = setInterval(() => {
       refreshToken();
-    }, 3000);
+    }, 10000);
 
     const authToken = localStorage.getItem("token");
     if (!authToken) {
